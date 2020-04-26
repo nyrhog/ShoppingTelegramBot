@@ -1,0 +1,4 @@
+/target/*
+.idea/
+/src/main/resources/application-test.properties
+/src/main/resources/application-prod.properties
