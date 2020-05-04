@@ -28,7 +28,7 @@ public class ClientRepositoryTest {
     private ClothesRepository clothesRepository;
 
     @BeforeEach
-    void setUp(){
+    void setup(){
         clientRepository.deleteAll();
 
         Client client1 = new Client();
@@ -47,6 +47,8 @@ public class ClientRepositoryTest {
         clientRepository.save(client2);
         clientRepository.save(client3);
     }
+
+
 
     @Test
     void deleteOneClient(){

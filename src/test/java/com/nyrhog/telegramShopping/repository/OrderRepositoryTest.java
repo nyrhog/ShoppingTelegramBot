@@ -29,7 +29,7 @@ class OrderRepositoryTest {
     private ClientRepository clientRepository;
 
     @BeforeEach
-    void sutUp(){
+    void setup(){
         orderRepository.deleteAll();
         clothesRepository.deleteAll();
     }

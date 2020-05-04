@@ -108,6 +108,9 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <profiles>
+                        <profile>application-test</profile>
+                    </profiles>
                     <executable>true</executable>
                     <mainClass>com.nyrhog.telegramShopping.TelegramShoppingApplication</mainClass>
                 </configuration>
