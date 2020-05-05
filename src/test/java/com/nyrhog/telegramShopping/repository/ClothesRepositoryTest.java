@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +28,12 @@ class ClothesRepositoryTest {
     @Autowired
     private ColorRepository colorRepository;
 
-    @BeforeEach
-    void setUp(){
-        clothesRepository.deleteAll();
-        colorRepository.deleteAll();
-        sizeRepository.deleteAll();
-    }
+//    @BeforeEach
+//    void setUp(){
+//        clothesRepository.deleteAll();
+//        colorRepository.deleteAll();
+//        sizeRepository.deleteAll();
+//    }
 
     @Test
     void saveClothes(){
@@ -100,5 +101,28 @@ class ClothesRepositoryTest {
         assertEquals(0, clothesRepository.findAll().size());
         assertEquals(2, colorRepository.findAll().size());
         assertEquals(2, sizeRepository.findAll().size());
+    }
+
+    @Test
+    void addOneFullClothes(){
+        Clothes clothes = new Clothes();
+
+        Color color = new Color();
+        color.setName("Green");
+        List<Color> colors = new ArrayList<>();
+        colors.add(color);
+
+        Size size = new Size();
+        size.setName("L");
+        List<Size> sizes = new ArrayList<>();
+        sizes.add(size);
+
+        clothes.setName("Test");
+        clothes.setCategory(Category.BOOTS);
+        clothes.setColors(colors);
+        clothes.setSizes(sizes);
+        clothes.setPrice(123123d);
+
+        clothesRepository.save(clothes);
     }
 }

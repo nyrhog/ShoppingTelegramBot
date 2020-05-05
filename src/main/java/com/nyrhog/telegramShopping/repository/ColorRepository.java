@@ -1,5 +1,6 @@
 package com.nyrhog.telegramShopping.repository;
 
+import com.nyrhog.telegramShopping.entity.Clothes;
 import com.nyrhog.telegramShopping.entity.Color;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,6 @@ public interface ColorRepository extends CrudRepository<Color, Long> {
 
     List<Color> findAll();
 
+    List<Color> findByClothes(Clothes clothes);
 
 }

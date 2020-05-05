@@ -1,5 +1,6 @@
 package com.nyrhog.telegramShopping.repository;
 
+import com.nyrhog.telegramShopping.entity.Clothes;
 import com.nyrhog.telegramShopping.entity.Size;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -9,5 +10,7 @@ import java.util.List;
 public interface SizeRepository extends CrudRepository<Size, Long> {
 
     List<Size> findAll();
+
+    List<Size> findByClothes(Clothes clothes);
 
 }
