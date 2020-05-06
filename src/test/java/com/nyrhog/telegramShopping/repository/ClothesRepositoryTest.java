@@ -92,7 +92,7 @@ class ClothesRepositoryTest {
         clothes.addSize(size1);
 
         clothesRepository.saveAndFlush(clothes);
-        clothesRepository.delete(clothes);
+        clothesRepository.deleteById(clothes.getId());
         clothesRepository.flush();
 
         assertEquals(0, clothesRepository.findAll().size());

@@ -14,8 +14,6 @@ import java.util.List;
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     List<Clothes> findAll();
 
-    List<Clothes> findAllByCategory(Category category);
-
     List<Clothes> findAllByColors(Color color);
 
     List<Clothes> findAllBySizes(Size size);
