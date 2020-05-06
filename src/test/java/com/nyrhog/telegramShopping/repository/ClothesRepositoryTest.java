@@ -36,6 +36,9 @@ class ClothesRepositoryTest {
     @Autowired
     private ColorRepository colorRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @BeforeEach
     void setUp(){
         clothesRepository.deleteAll();
@@ -103,19 +106,10 @@ class ClothesRepositoryTest {
     @Test
     void addOneFullClothes(){
         Clothes clothes = new Clothes("Test");
+        clothes.addSize(new Size("L"));
+        clothes.addColor(new Color("Green"));
+        clothes.addCategory(new Category("Boots"));
 
-        Color color = new Color("Green");
-        List<Color> colors = new ArrayList<>();
-        colors.add(color);
-
-        Size size = new Size("L");
-        List<Size> sizes = new ArrayList<>();
-        sizes.add(size);
-
-        clothes.setColors(colors);
-        clothes.setSizes(sizes);
-        clothes.setPrice(123123d);
-
-        clothesRepository.saveAndFlush(clothes);
+        clothesRepository.save(clothes);
     }
 }

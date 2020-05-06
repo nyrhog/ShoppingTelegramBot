@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Color {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "color_generator")
     @SequenceGenerator(name="color_generator", sequenceName = "color_seq", allocationSize = 1, initialValue = 1)
