@@ -16,6 +16,8 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     Client findByTelegramUserID(Long telegID);
 
+    void deleteByTelegramUserID(Long id);
+
 
 }
 

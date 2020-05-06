@@ -4,18 +4,23 @@ import com.nyrhog.telegramShopping.entity.Client;
 import com.nyrhog.telegramShopping.entity.Order;
 import com.nyrhog.telegramShopping.repository.ClientRepository;
 import com.nyrhog.telegramShopping.repository.OrderRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
 import java.util.List;
 
-
-@SpringBootTest
+@DataJpaTest
+@Rollback(false)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ClientRepositoryTest {
 
     @Autowired
@@ -30,32 +35,22 @@ public class ClientRepositoryTest {
     @BeforeEach
     void setup(){
         clientRepository.deleteAll();
+        orderRepository.deleteAll();
+        clothesRepository.deleteAll();
 
-        Client client1 = new Client();
-        client1.setName("Sasha");
-        client1.setTelegramUserID(1L);
+        Client client1 = new Client("Sasha", 1L);
+        Client client2 = new Client("Pasha", 2L);
+        Client client3 = new Client("Tony", 3L);
 
-        Client client2 = new Client();
-        client2.setName("Pasha");
-        client2.setTelegramUserID(2L);
-
-        Client client3 = new Client();
-        client3.setName("Tony");
-        client3.setTelegramUserID(3L);
-
-        clientRepository.save(client1);
-        clientRepository.save(client2);
-        clientRepository.save(client3);
+        clientRepository.saveAll(Arrays.asList(client1, client2, client3));
     }
-
 
 
     @Test
     void deleteOneClient(){
         List<Client> clients = clientRepository.findAll();
-        clientRepository.delete(clients.get(0));
-        clients = clientRepository.findAll();
-        assertEquals(2, clients.size());
+        clientRepository.deleteByTelegramUserID(clients.get(0).getTelegramUserID());
+        assertNull(clientRepository.findByTelegramUserID(clients.get(0).getTelegramUserID()));
     }
 
     @Test
@@ -68,35 +63,31 @@ public class ClientRepositoryTest {
         assertEquals(4, clients.size());
     }
 
-    @Transactional
+
     @Test
     void findClientByOrder(){
 
         Long telegramID = 12322L;
 
-        Order order = new Order();
-        order.setTotalPrice(123123d);
+        Order order = new Order(123123d);
 
         Client client = new Client();
         client.setTelegramUserID(telegramID);
         client.setName("Oleg");
         client.addOrder(order);
 
-        clientRepository.save(client);
+        clientRepository.saveAndFlush(client);
 
         Client client1 = clientRepository.findByTelegramUserID(telegramID);
-        System.out.println(client1.getOrders().get(0).getTotalPrice());
-        System.out.println(client1);
+        assertEquals(123123d, client1.getOrders().get(0).getTotalPrice());
+
     }
 
     @Test
     void deleteClientWithOrder(){
 
-        Order order = new Order();
-        order.setTotalPrice(123123d);
-
-        Order order2 = new Order();
-        order.setTotalPrice(1222123d);
+        Order order = new Order(123123d);
+        Order order2 = new Order(1222123d);
 
         Client client = new Client();
         client.setTelegramUserID(2222L);
@@ -104,8 +95,9 @@ public class ClientRepositoryTest {
         client.addOrder(order);
         client.addOrder(order2);
 
-        clientRepository.save(client);
-        clientRepository.delete(client);
+        clientRepository.saveAndFlush(client);
+        clientRepository.deleteByTelegramUserID(client.getTelegramUserID());
+        clientRepository.flush();
 
         assertEquals(0, orderRepository.findAll().size());
 

@@ -5,9 +5,14 @@ import com.nyrhog.telegramShopping.entity.Clothes;
 import com.nyrhog.telegramShopping.entity.Color;
 import com.nyrhog.telegramShopping.entity.Size;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -16,7 +21,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
+@Rollback(false)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ClothesRepositoryTest {
 
     @Autowired
@@ -39,7 +47,6 @@ class ClothesRepositoryTest {
     void saveClothes(){
         Clothes clothes = new Clothes();
         clothes.setName("name1");
-        clothes.setCategory(Category.BOOTS);
 
         clothesRepository.save(clothes);
 
@@ -50,7 +57,6 @@ class ClothesRepositoryTest {
     void updateNameOfClothes(){
         Clothes clothes = new Clothes();
         clothes.setName("name1");
-        clothes.setCategory(Category.BOOTS);
         clothesRepository.save(clothes);
 
 
@@ -66,7 +72,6 @@ class ClothesRepositoryTest {
     void deleteClothes(){
         Clothes clothes = new Clothes();
         clothes.setName("name1");
-        clothes.setCategory(Category.BOOTS);
 
         clothesRepository.save(clothes);
         clothesRepository.delete(clothes);
@@ -88,7 +93,6 @@ class ClothesRepositoryTest {
 
         Clothes clothes = new Clothes();
         clothes.setName("Clothes");
-        clothes.setCategory(Category.BOOTS);
         clothes.addColor(color);
         clothes.addColor(color1);
         clothes.addSize(size);
@@ -118,7 +122,6 @@ class ClothesRepositoryTest {
         sizes.add(size);
 
         clothes.setName("Test");
-        clothes.setCategory(Category.BOOTS);
         clothes.setColors(colors);
         clothes.setSizes(sizes);
         clothes.setPrice(123123d);

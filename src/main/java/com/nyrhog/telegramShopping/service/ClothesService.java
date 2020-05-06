@@ -62,7 +62,7 @@ public class ClothesService {
         return findByID(clothesDTO.getId());
     }
 
-    public List<ClothesDTO> findAllAndConvertToDTO(){
+    public List<ClothesDTO> findAllClothesAndConvertToDTO(){
         List<Clothes> clothes = clothesRepository.findAll();
         List<ClothesDTO> clothesDTOs = new ArrayList<>();
         for (Clothes c: clothes) {

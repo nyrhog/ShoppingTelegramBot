@@ -33,7 +33,7 @@ public class ClothesController {
     @GetMapping("/getAllClothes")
     public List<ClothesDTO> getAllClothes(){
 
-       return clothesService.findAllAndConvertToDTO();
+       return clothesService.findAllClothesAndConvertToDTO();
     }
 
 }
