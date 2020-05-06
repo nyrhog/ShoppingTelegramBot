@@ -34,4 +34,8 @@ public class Color {
         this.clothes.remove(clothes);
         clothes.getColors().remove(this);
     }
+
+    public Color(String name){
+        this.name = name;
+    }
 }

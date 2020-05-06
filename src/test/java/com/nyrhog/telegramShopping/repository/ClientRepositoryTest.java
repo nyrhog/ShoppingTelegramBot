@@ -55,9 +55,8 @@ public class ClientRepositoryTest {
 
     @Test
     void saveOneClientInDB(){
-        Client client = new Client();
-        client.setName("Kirill");
-        clientRepository.save(client);
+        Client client = new Client("Kirill", 12451L);
+        clientRepository.saveAndFlush(client);
 
         List<Client> clients = clientRepository.findAll();
         assertEquals(4, clients.size());
@@ -71,9 +70,7 @@ public class ClientRepositoryTest {
 
         Order order = new Order(123123d);
 
-        Client client = new Client();
-        client.setTelegramUserID(telegramID);
-        client.setName("Oleg");
+        Client client = new Client("Oleg", telegramID);
         client.addOrder(order);
 
         clientRepository.saveAndFlush(client);
@@ -89,9 +86,7 @@ public class ClientRepositoryTest {
         Order order = new Order(123123d);
         Order order2 = new Order(1222123d);
 
-        Client client = new Client();
-        client.setTelegramUserID(2222L);
-        client.setName("Anna");
+        Client client = new Client("Anna", 2222L );
         client.addOrder(order);
         client.addOrder(order2);
 

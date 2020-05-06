@@ -18,7 +18,7 @@ public class ClothesDTO {
     private Long id;
     private String name;
     private Double price;
-    private Category category;
+    private List<String> categories;
     private List<String> colors;
     private List<String> sizes;
 

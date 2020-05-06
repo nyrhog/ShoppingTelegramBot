@@ -36,71 +36,64 @@ class ClothesRepositoryTest {
     @Autowired
     private ColorRepository colorRepository;
 
-//    @BeforeEach
-//    void setUp(){
-//        clothesRepository.deleteAll();
-//        colorRepository.deleteAll();
-//        sizeRepository.deleteAll();
-//    }
+    @BeforeEach
+    void setUp(){
+        clothesRepository.deleteAll();
+        colorRepository.deleteAll();
+        sizeRepository.deleteAll();
+    }
 
     @Test
     void saveClothes(){
-        Clothes clothes = new Clothes();
-        clothes.setName("name1");
+        Clothes clothes = new Clothes("name1");
 
-        clothesRepository.save(clothes);
+        clothesRepository.saveAndFlush(clothes);
 
         assertEquals(1, clothesRepository.findAll().size());
     }
 
     @Test
     void updateNameOfClothes(){
-        Clothes clothes = new Clothes();
-        clothes.setName("name1");
-        clothesRepository.save(clothes);
+        Clothes clothes = new Clothes("name1");
+
+        clothesRepository.saveAndFlush(clothes);
 
 
         List<Clothes> clothesList = clothesRepository.findAll();
         clothesList.get(0).setName("changedName");
-        clothesRepository.save(clothesList.get(0));
-        clothesList = clothesRepository.findAll();
+        clothesRepository.saveAndFlush(clothesList.get(0));
 
-        assertEquals("changedName", clothesList.get(0).getName());
+        assertEquals("changedName", clothesRepository.findAll().get(0).getName());
     }
 
     @Test
     void deleteClothes(){
-        Clothes clothes = new Clothes();
-        clothes.setName("name1");
+        Clothes clothes = new Clothes("name1");
 
-        clothesRepository.save(clothes);
+        clothesRepository.saveAndFlush(clothes);
         clothesRepository.delete(clothes);
+        clothesRepository.flush();
 
         assertEquals(0, clothesRepository.findAll().size());
     }
 
     @Test
     void deleteClothesWithoutSizeAndColor(){
-        Size size = new Size();
-        size.setName("L");
-        Size size1 = new Size();
-        size1.setName("S");
+        Size size = new Size("L");
+        Size size1 = new Size("S");
 
-        Color color = new Color();
-        color.setName("Pink");
-        Color color1 = new Color();
-        color1.setName("Black");
+        Color color = new Color("Pink");
+        Color color1 = new Color("Black");
 
-        Clothes clothes = new Clothes();
-        clothes.setName("Clothes");
+        Clothes clothes = new Clothes("Clothes");
         clothes.addColor(color);
         clothes.addColor(color1);
         clothes.addSize(size);
         clothes.addSize(size1);
 
-        clothesRepository.save(clothes);
-        
+        clothesRepository.saveAndFlush(clothes);
         clothesRepository.delete(clothes);
+        clothesRepository.flush();
 
         assertEquals(0, clothesRepository.findAll().size());
         assertEquals(2, colorRepository.findAll().size());
@@ -109,23 +102,20 @@ class ClothesRepositoryTest {
 
     @Test
     void addOneFullClothes(){
-        Clothes clothes = new Clothes();
+        Clothes clothes = new Clothes("Test");
 
-        Color color = new Color();
-        color.setName("Green");
+        Color color = new Color("Green");
         List<Color> colors = new ArrayList<>();
         colors.add(color);
 
-        Size size = new Size();
-        size.setName("L");
+        Size size = new Size("L");
         List<Size> sizes = new ArrayList<>();
         sizes.add(size);
 
-        clothes.setName("Test");
         clothes.setColors(colors);
         clothes.setSizes(sizes);
         clothes.setPrice(123123d);
 
-        clothesRepository.save(clothes);
+        clothesRepository.saveAndFlush(clothes);
     }
 }

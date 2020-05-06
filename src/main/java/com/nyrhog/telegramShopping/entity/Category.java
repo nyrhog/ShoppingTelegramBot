@@ -21,7 +21,7 @@ public class Category {
     private Long id;
 
     @Column
-    String name;
+    private String name;
 
     @ManyToMany(mappedBy="categories")
     private List<Clothes> clothes = new ArrayList<>();
@@ -34,6 +34,10 @@ public class Category {
     public void removeClothes(Clothes clothes) {
         this.clothes.remove(clothes);
         clothes.getCategories().remove(this);
+    }
+
+    public Category(String name){
+        this.name = name;
     }
 
 }

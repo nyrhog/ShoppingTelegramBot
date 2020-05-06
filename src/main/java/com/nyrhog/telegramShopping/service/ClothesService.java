@@ -1,9 +1,11 @@
 package com.nyrhog.telegramShopping.service;
 
+import com.nyrhog.telegramShopping.entity.Category;
 import com.nyrhog.telegramShopping.entity.Clothes;
 import com.nyrhog.telegramShopping.entity.Color;
 import com.nyrhog.telegramShopping.entity.DTO.ClothesDTO;
 import com.nyrhog.telegramShopping.entity.Size;
+import com.nyrhog.telegramShopping.repository.CategoryRepository;
 import com.nyrhog.telegramShopping.repository.ClothesRepository;
 import com.nyrhog.telegramShopping.repository.ColorRepository;
 import com.nyrhog.telegramShopping.repository.SizeRepository;
@@ -24,6 +26,9 @@ public class ClothesService {
 
     @Autowired
     private SizeRepository sizeRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
 
     public Clothes findByID(Long id){
@@ -48,12 +53,18 @@ public class ClothesService {
             sizeNames.add(s.getName());
         }
 
+        List<String> categoryNames = new ArrayList<>();
+        List<Category> categories = categoryRepository.findByClothes(clothes);
+        for (Category s: categories) {
+            categoryNames.add(s.getName());
+        }
+
         clothesDTO.setId(id);
         clothesDTO.setName(clothes.getName());
-        clothesDTO.setCategory(clothes.getCategory());
         clothesDTO.setPrice(clothes.getPrice());
         clothesDTO.setColors(colorNames);
         clothesDTO.setSizes(sizeNames);
+        clothesDTO.setCategories(categoryNames);
 
         return clothesDTO;
     }

@@ -100,4 +100,9 @@ public class Clothes {
         categories.remove(category);
         category.getClothes().remove(this);
     }
+
+    public Clothes(String name){
+        this.name = name;
+    }
+
 }
