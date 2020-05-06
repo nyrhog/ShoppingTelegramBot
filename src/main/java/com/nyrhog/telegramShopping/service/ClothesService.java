@@ -8,7 +8,6 @@ import com.nyrhog.telegramShopping.repository.ClothesRepository;
 import com.nyrhog.telegramShopping.repository.ColorRepository;
 import com.nyrhog.telegramShopping.repository.SizeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,8 +44,7 @@ public class ClothesService {
         }
         List<String> sizeNames = new ArrayList<>();
         List<Size> sizes = sizeRepository.findByClothes(clothes);
-        for (Size s: sizes
-             ) {
+        for (Size s: sizes) {
             sizeNames.add(s.getName());
         }
 
@@ -62,5 +60,14 @@ public class ClothesService {
 
     public Clothes getClothesFromDTO(ClothesDTO clothesDTO){
         return findByID(clothesDTO.getId());
+    }
+
+    public List<ClothesDTO> findAllAndConvertToDTO(){
+        List<Clothes> clothes = clothesRepository.findAll();
+        List<ClothesDTO> clothesDTOs = new ArrayList<>();
+        for (Clothes c: clothes) {
+            clothesDTOs.add(setClothesDTO(c.getId()));
+        }
+        return clothesDTOs;
     }
 }

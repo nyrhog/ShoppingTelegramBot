@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class ClothesController {
 
@@ -24,10 +26,14 @@ public class ClothesController {
 
         ClothesDTO clothesDTO = clothesService.setClothesDTO(id);
 
-
         if(clothesDTO.getId() == null) return "Такой одежды не существует";
         else return clothesDTO;
+    }
 
+    @GetMapping("/getAllClothes")
+    public List<ClothesDTO> getAllClothes(){
+
+       return clothesService.findAllAndConvertToDTO();
     }
 
 }
