@@ -34,4 +34,9 @@ public class Size {
         this.clothes.remove(clothes);
         clothes.getSizes().remove(this);
     }
+
+    public Size(String name){
+        this.name = name;
+    }
+
 }

@@ -31,10 +31,6 @@ public class Client {
     )
     List<Order> orders = new ArrayList<>();
 
-
-    /*
-    As you see we need to do something like "recursion" below
-     */
     public void addOrder(Order order) {
         orders.add(order);
         order.setClient(this);
@@ -43,6 +39,11 @@ public class Client {
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setClient(null);
+    }
+
+    public Client(String name, Long telegramUserID){
+        this.name = name;
+        this.telegramUserID = telegramUserID;
     }
 }
 

@@ -57,4 +57,11 @@ public class Order {
         this.clothes.remove(clothes);
         clothes.getOrders().remove(this);
     }
+
+    public Order(Double totalPrice){
+
+        this.totalPrice = totalPrice;
+
+    }
+
 }

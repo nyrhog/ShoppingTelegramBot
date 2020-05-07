@@ -27,9 +27,6 @@ public class Clothes {
     @Column
     private Double price;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
-
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -81,6 +78,31 @@ public class Clothes {
     public void removeOrder(Order order) {
         orders.remove(order);
         order.getClothes().remove(this);
+    }
+
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "clother_category",
+            joinColumns = { @JoinColumn(name = "clother_id") },
+            inverseJoinColumns = { @JoinColumn(name = "category_id") })
+    private List<Category> categories = new ArrayList<>();
+
+    public void addCategory(Category category) {
+        categories.add(category);
+        category.getClothes().add(this);
+    }
+
+    public void removeCategory(Category category) {
+        categories.remove(category);
+        category.getClothes().remove(this);
+    }
+
+    public Clothes(String name){
+        this.name = name;
     }
 
 }
