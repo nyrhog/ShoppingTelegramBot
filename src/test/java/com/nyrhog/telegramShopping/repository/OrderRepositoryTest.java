@@ -16,6 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,9 +35,6 @@ class OrderRepositoryTest {
     @Autowired
     private  ClothesRepository clothesRepository;
 
-    @Autowired
-    private ClientRepository clientRepository;
-
     @BeforeEach
     void setup(){
         orderRepository.deleteAll();
@@ -48,8 +47,7 @@ class OrderRepositoryTest {
 
         orderRepository.saveAndFlush(order);
 
-       List<Order> orders = orderRepository.findAll();
-       assertEquals(1, orders.size());
+        assertEquals(1, orderRepository.findAll().size());
 
     }
 
@@ -84,16 +82,19 @@ class OrderRepositoryTest {
     void deleteOrderWithoutClothes(){
         Clothes armaniBoots = new Clothes();
         armaniBoots.setName("EA7 Emporio Armani");
-        clothesRepository.save(armaniBoots);
+        clothesRepository.saveAndFlush(armaniBoots);
 
         Clothes armaniJacket = new Clothes();
         armaniBoots.setName("Платье-футляр из шелкового кади");
-        clothesRepository.save(armaniJacket);
+        clothesRepository.saveAndFlush(armaniJacket);
 
         Order order = new Order();
         order.setTotalPrice(500000d);
-        order.addClothes(clothesRepository.findById(1L).orElse(null));
-        order.addClothes(clothesRepository.findById(2L).orElse(null));
+        List<Clothes> clothesList = clothesRepository.findByNameIn(Arrays.asList("EA7 Emporio Armani",
+                                                                                "Платье-футляр из шелкового кади" ));
+        for (Clothes clothes : clothesList) {
+            order.addClothes(clothes);
+        }
 
         orderRepository.saveAndFlush(order);
 

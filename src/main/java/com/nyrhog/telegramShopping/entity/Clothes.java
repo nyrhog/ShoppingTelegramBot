@@ -86,7 +86,7 @@ public class Clothes {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "clother_color",
+    @JoinTable(name = "clother_category",
             joinColumns = { @JoinColumn(name = "clother_id") },
             inverseJoinColumns = { @JoinColumn(name = "category_id") })
     private List<Category> categories = new ArrayList<>();

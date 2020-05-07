@@ -17,4 +17,8 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     List<Clothes> findAllByColors(Color color);
 
     List<Clothes> findAllBySizes(Size size);
+
+    Clothes findByName(String name);
+
+    List<Clothes> findByNameIn(List<String> names);
 }

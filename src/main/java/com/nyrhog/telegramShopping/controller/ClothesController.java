@@ -1,14 +1,12 @@
 package com.nyrhog.telegramShopping.controller;
 
+import com.nyrhog.telegramShopping.entity.API.FilterAPI;
 import com.nyrhog.telegramShopping.entity.Clothes;
 import com.nyrhog.telegramShopping.entity.DTO.ClothesDTO;
 import com.nyrhog.telegramShopping.repository.ClothesRepository;
 import com.nyrhog.telegramShopping.service.ClothesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class ClothesController {
     private ClothesService clothesService;
 
     @GetMapping("/getOneClothes/{id:\\d+}")
-    public @ResponseBody Object getOneClothes(@PathVariable Long id){
+    public Object getOneClothes(@PathVariable Long id){
 
         ClothesDTO clothesDTO = clothesService.setClothesDTO(id);
 
@@ -34,6 +32,14 @@ public class ClothesController {
     public List<ClothesDTO> getAllClothes(){
 
        return clothesService.findAllClothesAndConvertToDTO();
+
     }
+
+    @PostMapping("/test")
+    public String postTest(@RequestBody FilterAPI data){
+        System.out.println("это дата: " + data);
+        return "work";
+    }
+
 
 }

@@ -14,12 +14,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @DataJpaTest
 @Rollback(false)
@@ -53,6 +53,7 @@ class ClothesRepositoryTest {
         clothesRepository.saveAndFlush(clothes);
 
         assertEquals(1, clothesRepository.findAll().size());
+        assertNotNull(clothesRepository.findByName("name1"));
     }
 
     @Test
@@ -61,12 +62,11 @@ class ClothesRepositoryTest {
 
         clothesRepository.saveAndFlush(clothes);
 
+        clothes = clothesRepository.findByName("name1");
+        clothes.setName("changedName");
+        clothesRepository.saveAndFlush(clothes);
 
-        List<Clothes> clothesList = clothesRepository.findAll();
-        clothesList.get(0).setName("changedName");
-        clothesRepository.saveAndFlush(clothesList.get(0));
-
-        assertEquals("changedName", clothesRepository.findAll().get(0).getName());
+        assertNotNull(clothesRepository.findByName("changedName"));
     }
 
     @Test
@@ -74,7 +74,7 @@ class ClothesRepositoryTest {
         Clothes clothes = new Clothes("name1");
 
         clothesRepository.saveAndFlush(clothes);
-        clothesRepository.delete(clothes);
+        clothesRepository.deleteById(clothesRepository.findByName("name1").getId());
         clothesRepository.flush();
 
         assertEquals(0, clothesRepository.findAll().size());
@@ -95,7 +95,7 @@ class ClothesRepositoryTest {
         clothes.addSize(size1);
 
         clothesRepository.saveAndFlush(clothes);
-        clothesRepository.deleteById(clothes.getId());
+        clothesRepository.deleteById(clothesRepository.findByName("Clothes").getId());
         clothesRepository.flush();
 
         assertEquals(0, clothesRepository.findAll().size());
@@ -110,6 +110,9 @@ class ClothesRepositoryTest {
         clothes.addColor(new Color("Green"));
         clothes.addCategory(new Category("Boots"));
 
-        clothesRepository.save(clothes);
+        clothesRepository.saveAndFlush(clothes);
+
+        assertEquals(1, clothesRepository.findAll().size());
+
     }
 }

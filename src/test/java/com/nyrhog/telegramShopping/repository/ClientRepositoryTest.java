@@ -49,8 +49,8 @@ public class ClientRepositoryTest {
     @Test
     void deleteOneClient(){
         List<Client> clients = clientRepository.findAll();
-        clientRepository.deleteByTelegramUserID(clients.get(0).getTelegramUserID());
-        assertNull(clientRepository.findByTelegramUserID(clients.get(0).getTelegramUserID()));
+        clientRepository.deleteByTelegramUserID(1L);
+        assertNull(clientRepository.findByTelegramUserID(1L));
     }
 
     @Test
@@ -60,6 +60,7 @@ public class ClientRepositoryTest {
 
         List<Client> clients = clientRepository.findAll();
         assertEquals(4, clients.size());
+        assertEquals(client.getName(), clientRepository.findByTelegramUserID(12451L).getName());
     }
 
 
@@ -77,6 +78,7 @@ public class ClientRepositoryTest {
 
         Client client1 = clientRepository.findByTelegramUserID(telegramID);
         assertEquals(123123d, client1.getOrders().get(0).getTotalPrice());
+        assertEquals(client.getName(), client1.getName());
 
     }
 
@@ -91,12 +93,12 @@ public class ClientRepositoryTest {
         client.addOrder(order2);
 
         clientRepository.saveAndFlush(client);
-        clientRepository.deleteByTelegramUserID(client.getTelegramUserID());
+        clientRepository.deleteByTelegramUserID(2222L);
         clientRepository.flush();
 
         assertEquals(0, orderRepository.findAll().size());
-
         assertNull(clientRepository.findByTelegramUserID(2222L));
+
     }
 
 }
