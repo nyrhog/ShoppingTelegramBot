@@ -5,6 +5,7 @@ import com.nyrhog.telegramShopping.entity.Clothes;
 import com.nyrhog.telegramShopping.entity.Color;
 import com.nyrhog.telegramShopping.entity.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,13 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     Clothes findByName(String name);
 
     List<Clothes> findByNameIn(List<String> names);
+
+    @Query("FROM Clothes as clothes left join fetch clothes.colors as ccolor where " +
+            "ccolor.name in ?1")
+    List<Clothes> findAllByColorsIn(List<String> colors);
+
+    @Query("FROM Clothes as clothes left join fetch clothes.sizes as csize where " +
+            "csize in ?1")
+    List<Clothes> findAllBySizes(List<Size> sizes);
+
 }

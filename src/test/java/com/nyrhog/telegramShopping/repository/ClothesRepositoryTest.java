@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,5 +115,53 @@ class ClothesRepositoryTest {
 
         assertEquals(1, clothesRepository.findAll().size());
 
+    }
+
+    @Test
+    void findClothesByColorsAndSizes(){
+
+        Color colorBlue = new Color("Blue");
+        Color colorRed = new Color("Red");
+        Color colorPink = new Color("Pink");
+
+        Size sizeL = new Size("L");
+        Size sizeXL = new Size("XL");
+        Size sizeS = new Size("S");
+
+        Clothes clothes1 = new Clothes("Clothes1");
+        clothes1.addColor(colorBlue);
+        clothes1.addSize(sizeXL);
+
+        Clothes clothes2 = new Clothes("Clothes2");
+        clothes1.addColor(colorBlue);
+        clothes1.addSize(sizeL);
+
+        Clothes clothes3 = new Clothes("Clothes3");
+        clothes1.addColor(colorRed);
+        clothes1.addSize(sizeXL);
+
+        Clothes clothes4 = new Clothes("Clothes4");
+        clothes1.addColor(colorPink);
+        clothes1.addSize(sizeS);
+
+        clothesRepository.saveAll(Arrays.asList(clothes1, clothes2, clothes3, clothes4));
+        clothesRepository.flush();
+
+        List<String> colors = new ArrayList<>();
+        colors.add(colorBlue.getName());
+        colors.add(colorRed.getName());
+
+        List<Size> sizes = new ArrayList<>();
+        sizes.add(sizeL);
+        sizes.add(sizeXL);
+
+        List<Clothes> clothes = clothesRepository.findAllBySizes(sizes);
+
+        System.out.println(clothes.size());
+
+        for (Clothes c : clothes) {
+            System.out.println(c.getName());
+
+        }
     }
 }

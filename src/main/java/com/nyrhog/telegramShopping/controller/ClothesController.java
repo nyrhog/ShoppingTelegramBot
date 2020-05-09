@@ -24,8 +24,10 @@ public class ClothesController {
 
         ClothesDTO clothesDTO = clothesService.setClothesDTO(id);
 
-        if(clothesDTO.getId() == null) return "Такой одежды не существует";
-        else return clothesDTO;
+        if(clothesDTO.getId() == null)
+            return "Такой одежды не существует";
+
+        return clothesDTO;
     }
 
     @GetMapping("/getAllClothes")
@@ -37,6 +39,8 @@ public class ClothesController {
 
     @PostMapping("/test")
     public String postTest(@RequestBody FilterAPI data){
+
+
         System.out.println("это дата: " + data);
         return "work";
     }
