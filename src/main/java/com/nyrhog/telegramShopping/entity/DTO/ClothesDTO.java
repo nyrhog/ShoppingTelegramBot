@@ -14,7 +14,6 @@ import java.util.List;
 @Data
 public class ClothesDTO {
 
-    private ResultForDTO result;
     private Long id;
     private String name;
     private Double price;

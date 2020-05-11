@@ -81,4 +81,16 @@ public class ClothesService {
         }
         return clothesDTOs;
     }
+
+    public List<Clothes> findBySizesAndColors(List<String> sizes, List<String> colors){
+
+        List<Clothes> foundBySizes = clothesRepository.findAllBySizes(sizes);
+        List<Clothes> common = new ArrayList<>();
+        for (Clothes clothesItem : clothesRepository.findAllByColors(colors)) {
+            if(!common.contains(clothesItem) && foundBySizes.contains(clothesItem))
+                common.add(clothesItem);
+        }
+
+        return common;
+    }
 }

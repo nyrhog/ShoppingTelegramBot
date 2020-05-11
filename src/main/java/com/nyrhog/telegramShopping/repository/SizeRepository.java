@@ -14,4 +14,5 @@ public interface SizeRepository extends JpaRepository<Size, Long> {
 
     List<Size> findByClothes(Clothes clothes);
 
+    Size findByName(String name);
 }
