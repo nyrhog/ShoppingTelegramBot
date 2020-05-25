@@ -15,8 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Size {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "size_generator")
-    @SequenceGenerator(name = "size_generator", sequenceName = "size_seq", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

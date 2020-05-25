@@ -30,6 +30,10 @@ public class ClothesService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    public boolean checkIfExistsById(Long id){
+       return clothesRepository.existsById(id);
+    }
+
 
     public Clothes findByID(Long id){
         return clothesRepository.findById(id).orElse(null);

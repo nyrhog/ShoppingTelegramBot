@@ -1,10 +1,7 @@
 package com.nyrhog.telegramShopping.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,16 +10,15 @@ import java.util.List;
 
 @Entity
 @Table(name="orderclient")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"client", "clothes"})
+@ToString(exclude = {"client"})
 public class Order {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_generator")
-    @SequenceGenerator(name="order_generator", sequenceName = "order_seq", allocationSize = 1, initialValue = 1)
-    private Long id;
+
+    @EmbeddedId
+    private OrderClothesID id;
 
     @Column
     private Date applicationDate;
@@ -38,24 +34,30 @@ public class Order {
     @JoinColumn(name="client_id")
     private Client client;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "order_clothes",
-            joinColumns = { @JoinColumn(name = "order_id") },
-            inverseJoinColumns = { @JoinColumn(name = "clothes_id") })
-    private List<Clothes> clothes = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OrderClothes> orderClothes = new ArrayList<>();
 
-    public void addClothes(Clothes clothes) {
-        this.clothes.add(clothes);
-        clothes.getOrders().add(this);
+    public void addClothes(Clothes clothes, String color, String size){
+        OrderClothes orderClothes = new OrderClothes(this, clothes,
+                                                        color, size);
+        this.orderClothes.add(orderClothes);
+        clothes.getOrderClothes().add(orderClothes);
     }
 
-    public void removeClothes(Clothes clothes) {
-        this.clothes.remove(clothes);
-        clothes.getOrders().remove(this);
+    public void removeClothes(Clothes clothes){
+        for (OrderClothes orderClothes: clothes.getOrderClothes()){
+            if(orderClothes.getOrder().equals(this) &&
+                    orderClothes.getClothes().equals(clothes))
+            {
+                orderClothes.getOrder().getOrderClothes().remove(orderClothes);
+                orderClothes.setOrder(null);
+                orderClothes.setClothes(null);
+            }
+        }
     }
 
     public Order(Double totalPrice){

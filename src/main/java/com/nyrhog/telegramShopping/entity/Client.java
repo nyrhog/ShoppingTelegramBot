@@ -14,8 +14,7 @@ import java.util.List;
 @Data
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_generator")
-    @SequenceGenerator(name="client_generator", sequenceName = "client_seq", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -40,6 +39,7 @@ public class Client {
         orders.remove(order);
         order.setClient(null);
     }
+
 
     public Client(String name, Long telegramUserID){
         this.name = name;

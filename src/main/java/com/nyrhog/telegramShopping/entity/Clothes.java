@@ -16,9 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Clothes {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clothes_generator")
-    @SequenceGenerator(name="clothes_generator", sequenceName = "clothes_seq", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -67,19 +67,29 @@ public class Clothes {
         size.getClothes().remove(this);
     }
 
-    @ManyToMany(mappedBy="clothes")
-    private List<Order> orders = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "clothes",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OrderClothes> orderClothes = new ArrayList<>();
 
-    public void addOrder(Order order) {
-        orders.add(order);
-        order.getClothes().add(this);
+    public void addOrder(Order order, String color, String size){
+        OrderClothes orderClothes = new OrderClothes(order, this,
+                                                        color, size);
+        this.orderClothes.add(orderClothes);
+        order.getOrderClothes().add(orderClothes);
     }
 
-    public void removeOrder(Order order) {
-        orders.remove(order);
-        order.getClothes().remove(this);
+    public void removeOrder(Order order){
+        for (OrderClothes orderClothes : order.getOrderClothes()) {
+            if(orderClothes.getOrder().equals(order) && orderClothes.getClothes().equals(this)){
+                orderClothes.getClothes().getOrderClothes().remove(orderClothes);
+                orderClothes.setClothes(null);
+                orderClothes.setOrder(null);
+            }
+        }
     }
-
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -100,6 +110,8 @@ public class Clothes {
         categories.remove(category);
         category.getClothes().remove(this);
     }
+
+
 
     public Clothes(String name){
         this.name = name;

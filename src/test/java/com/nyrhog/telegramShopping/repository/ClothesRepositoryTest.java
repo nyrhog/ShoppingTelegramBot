@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @Rollback(false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ActiveProfiles("test")
 class ClothesRepositoryTest {
 
     @Autowired
@@ -40,12 +42,12 @@ class ClothesRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-//    @BeforeEach
-//    void setUp(){
-//        clothesRepository.deleteAll();
-//        colorRepository.deleteAll();
-//        sizeRepository.deleteAll();
-//    }
+    @BeforeEach
+    void setUp(){
+        clothesRepository.deleteAll();
+        colorRepository.deleteAll();
+        sizeRepository.deleteAll();
+    }
 
     @Test
     void saveClothes(){
@@ -116,6 +118,7 @@ class ClothesRepositoryTest {
         assertEquals(1, clothesRepository.findAll().size());
 
     }
+
 
 //    @Test
 //    void findClothesByColorsAndSizes(){

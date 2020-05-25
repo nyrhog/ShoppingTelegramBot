@@ -16,10 +16,6 @@ import java.util.List;
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     List<Clothes> findAll();
 
-    List<Clothes> findAllByColors(Color color);
-
-    List<Clothes> findAllBySizes(Size size);
-
     Clothes findByName(String name);
 
     List<Clothes> findByNameIn(List<String> names);
@@ -31,5 +27,7 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     @Query("FROM Clothes as clothes left join fetch clothes.sizes as csize where " +
             "csize.name in ?1")
     List<Clothes> findAllBySizes(List<String> sizes);
+
+    boolean existsById(Long id);
 
 }

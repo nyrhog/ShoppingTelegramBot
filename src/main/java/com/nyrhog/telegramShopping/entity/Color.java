@@ -16,8 +16,7 @@ import java.util.List;
 public class Color {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "color_generator")
-    @SequenceGenerator(name="color_generator", sequenceName = "color_seq", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
