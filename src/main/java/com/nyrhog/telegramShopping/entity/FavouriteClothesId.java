@@ -1,6 +1,5 @@
 package com.nyrhog.telegramShopping.entity;
 
-
 import lombok.*;
 
 import javax.persistence.Column;
@@ -14,10 +13,10 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderClothesID implements Serializable {
+public class FavouriteClothesId implements Serializable {
 
     @Column
-    private Long orderId;
+    private Long clientId;
 
     @Column
     private Long clothesId;
@@ -25,14 +24,18 @@ public class OrderClothesID implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderClothesID that = (OrderClothesID) o;
-        return Objects.equals(orderId, that.orderId) &&
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        FavouriteClothesId that = (FavouriteClothesId) o;
+        return Objects.equals(clientId, that.clientId) &&
                 Objects.equals(clothesId, that.clothesId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, clothesId);
+        return Objects.hash(clientId, clothesId);
     }
+
 }

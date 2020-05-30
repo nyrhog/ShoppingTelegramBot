@@ -1,18 +1,21 @@
 package com.nyrhog.telegramShopping.entity;
 
-import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 
 @Entity
 @Table
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,30 +23,49 @@ public class Client {
     @Column
     private String name;
 
-    @Column
+    @NaturalId
     private Long telegramUserID;
 
+
+
+    /*
+    FavouriteClothes: ManyToMany with extra columns
+     */
     @OneToMany(
             mappedBy = "client",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    List<Order> orders = new ArrayList<>();
+    private List<FavouriteClothes> favouriteClothes = new ArrayList<>();
 
-    public void addOrder(Order order) {
-        orders.add(order);
-        order.setClient(this);
+    public void addFavouriteClothes(Clothes clothes, Size size, Color color) {
+        FavouriteClothes favouriteClothes = new FavouriteClothes(this, clothes, size.getName(), color.getName());
+        this.favouriteClothes.add(favouriteClothes);
+        clothes.getFavouriteClothes().add(favouriteClothes);
     }
 
-    public void removeOrder(Order order) {
-        orders.remove(order);
-        order.setClient(null);
+    public void removeFavouriteClothes(Clothes clothes) {
+        for(FavouriteClothes favouriteClothes : clothes.getFavouriteClothes()){
+            if (favouriteClothes.getClient().equals(this) && favouriteClothes.getClothes().equals(clothes)) {
+                favouriteClothes.getClothes().getFavouriteClothes().remove(favouriteClothes);
+                favouriteClothes.setClient(null);
+                favouriteClothes.setClothes(null);
+            }
+        }
     }
 
 
-    public Client(String name, Long telegramUserID){
-        this.name = name;
-        this.telegramUserID = telegramUserID;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(telegramUserID, client.telegramUserID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(telegramUserID);
     }
 }
 

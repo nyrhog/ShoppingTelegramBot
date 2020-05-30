@@ -8,17 +8,47 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Data
-public class ClothesDTO {
+public class ClothesDTO{
 
     private Long id;
     private String name;
     private Double price;
-    private List<String> categories;
-    private List<String> colors;
-    private List<String> sizes;
+
+    private List<String> categories = new ArrayList<>();
+
+    public void addCategory(String category){
+        categories.add(category);
+    }
+
+    public void removeCategory(String category){
+        categories.remove(category);
+    }
+
+    private List<String> colors = new ArrayList<>();
+
+    public void addColors(String color){
+        colors.add(color);
+    }
+
+    public void removeColors(String color){
+        colors.remove(color);
+    }
+
+    private List<String> sizes = new ArrayList<>();
+
+    public void addSize(String size){
+        sizes.add(size);
+    }
+
+    public void removeSize(String size){
+        sizes.remove(size);
+    }
+
 
 }

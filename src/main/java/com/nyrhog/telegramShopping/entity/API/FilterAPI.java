@@ -8,6 +8,9 @@ import java.util.List;
 @Data
 public class FilterAPI {
 
+    @JsonProperty("category")
+    List<String> categories;
+
     @JsonProperty("color")
     List<String> colors;
 

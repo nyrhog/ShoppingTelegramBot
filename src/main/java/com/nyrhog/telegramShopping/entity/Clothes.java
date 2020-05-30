@@ -1,21 +1,25 @@
 package com.nyrhog.telegramShopping.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "clothes")
-@Data
-@AllArgsConstructor
+@Table
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Clothes {
+
+    //Конструктор
+    public Clothes(String name){
+        this.name = name;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +31,9 @@ public class Clothes {
     @Column
     private Double price;
 
+    /*
+    Color: ManyToMany
+     */
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -47,6 +54,11 @@ public class Clothes {
         color.getClothes().remove(this);
     }
 
+
+
+    /*
+    Size: ManyToMany
+     */
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -67,30 +79,11 @@ public class Clothes {
         size.getClothes().remove(this);
     }
 
-    @OneToMany(
-            mappedBy = "clothes",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<OrderClothes> orderClothes = new ArrayList<>();
 
-    public void addOrder(Order order, String color, String size){
-        OrderClothes orderClothes = new OrderClothes(order, this,
-                                                        color, size);
-        this.orderClothes.add(orderClothes);
-        order.getOrderClothes().add(orderClothes);
-    }
 
-    public void removeOrder(Order order){
-        for (OrderClothes orderClothes : order.getOrderClothes()) {
-            if(orderClothes.getOrder().equals(order) && orderClothes.getClothes().equals(this)){
-                orderClothes.getClothes().getOrderClothes().remove(orderClothes);
-                orderClothes.setClothes(null);
-                orderClothes.setOrder(null);
-            }
-        }
-    }
-
+    /*
+    Category: ManyToMany
+     */
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -113,8 +106,38 @@ public class Clothes {
 
 
 
-    public Clothes(String name){
-        this.name = name;
+    /*
+    FavouriteClothes: ManyToMany with extra columns
+    */
+    @OneToMany(
+            mappedBy = "clothes",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<FavouriteClothes> favouriteClothes = new ArrayList<>();
+
+    public void addFavouriteClothes(Client client, Size size, Color color){
+        FavouriteClothes favouriteClothes = new FavouriteClothes(client, this, size.getName(), color.getName());
+        this.favouriteClothes.add(favouriteClothes);
+        client.getFavouriteClothes().add(favouriteClothes);
     }
 
+    public void removeFavouriteClothes(Client client) {
+        for(FavouriteClothes favouriteClothes : client.getFavouriteClothes()){
+            if (favouriteClothes.getClient().equals(client) && favouriteClothes.getClothes().equals(this)) {
+                favouriteClothes.getClient().getFavouriteClothes().remove(favouriteClothes);
+                favouriteClothes.setClient(null);
+                favouriteClothes.setClothes(null);
+            }
+        }
+    }
+
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Clothes clothes = (Clothes) o;
+//        return Objects.equals(id, clothes.id);
+//    }
 }

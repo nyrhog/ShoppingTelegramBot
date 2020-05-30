@@ -1,19 +1,24 @@
 package com.nyrhog.telegramShopping.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "category")
-@Data
-@AllArgsConstructor
+@Table
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString(exclude = "clothes")
 public class Category {
+
+    //Конструктор
+    public Category(String name){
+        this.name = name;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +40,11 @@ public class Category {
         clothes.getCategories().remove(this);
     }
 
-    public Category(String name){
-        this.name = name;
-    }
-
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Category category = (Category) o;
+//        return Objects.equals(id, category.id);
+//    }
 }

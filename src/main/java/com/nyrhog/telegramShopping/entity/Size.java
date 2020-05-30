@@ -1,19 +1,24 @@
 package com.nyrhog.telegramShopping.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "size")
-@Data
-@AllArgsConstructor
+@Table
 @NoArgsConstructor
+@Getter
+@Setter
 public class Size {
+
+    //Конструктор
+    public Size(String name){
+        this.name = name;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,8 +39,11 @@ public class Size {
         clothes.getSizes().remove(this);
     }
 
-    public Size(String name){
-        this.name = name;
-    }
-
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Size size = (Size) o;
+//        return Objects.equals(id, size.id);
+//    }
 }

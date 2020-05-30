@@ -1,24 +1,35 @@
 package com.nyrhog.telegramShopping.repository;
 
-import com.nyrhog.telegramShopping.entity.Category;
+
 import com.nyrhog.telegramShopping.entity.Clothes;
-import com.nyrhog.telegramShopping.entity.Color;
-import com.nyrhog.telegramShopping.entity.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
-    List<Clothes> findAll();
 
     Clothes findByName(String name);
 
-    List<Clothes> findByNameIn(List<String> names);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Query("FROM Clothes as clothes left join fetch clothes.colors as ccolor where " +
             "ccolor.name in ?1")
@@ -29,5 +40,7 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
     List<Clothes> findAllBySizes(List<String> sizes);
 
     boolean existsById(Long id);
+
+    void deleteByName(String name);
 
 }
