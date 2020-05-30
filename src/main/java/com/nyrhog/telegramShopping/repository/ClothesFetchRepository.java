@@ -171,14 +171,29 @@ public class ClothesFetchRepository {
             boolean colBool = false;
             boolean sizeBool = false;
 
-            if (categories.size() > 0)
-                 catBool  = clothes.getCategories().stream().anyMatch(category -> categories.contains(category.getName()));
+            System.out.println(clothes);
+            System.out.println();
+            System.out.println();
+            if (categories != null) {
+                if (categories.size() > 0)
+                    catBool = clothes.getCategories().stream().anyMatch(category -> categories.contains(category.getName()));
+            } else {
+                catBool = true;
+            }
 
-            if (colors.size() > 0)
-                colBool = clothes.getColors().stream().anyMatch(color -> colors.contains(color.getName()));
+            if (colors != null){
+                if (colors.size() > 0)
+                    colBool = clothes.getColors().stream().anyMatch(color -> colors.contains(color.getName()));
+            } else {
+                colBool = true;
+            }
 
-            if (sizes.size() > 0)
-                sizeBool = clothes.getSizes().stream().anyMatch(size -> sizes.contains(size.getName()));
+            if (sizes != null){
+                if (sizes.size() > 0)
+                    sizeBool = clothes.getSizes().stream().anyMatch(size -> sizes.contains(size.getName()));
+            } else {
+                sizeBool = true;
+            }
 
             System.out.println("cat:" + catBool);
             System.out.println("col:" + colBool);

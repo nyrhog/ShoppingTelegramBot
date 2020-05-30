@@ -12,6 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString(exclude = "clothes")
 public class Size {
 
     //Конструктор
