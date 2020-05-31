@@ -132,6 +132,29 @@ public class Clothes {
         }
     }
 
+    @OneToMany(
+            mappedBy = "clothes",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OrderClothes> orderClothes = new ArrayList<>();
+
+    public void addOrderClothes(OrderClient order, Size size, Color color){
+        OrderClothes orderClothes = new OrderClothes(order, this, size.getName(), color.getName());
+        this.orderClothes.add(orderClothes);
+        order.getOrderClothesList().add(orderClothes);
+    }
+
+    public void removeOrderClothes(OrderClient order){
+        for (OrderClothes orderClothes : order.getOrderClothesList()){
+            if(orderClothes.getClothes().equals(this) && orderClothes.getOrder().equals(order)){
+                orderClothes.getClothes().getOrderClothes().remove(orderClothes);
+                orderClothes.setClothes(null);
+                orderClothes.setOrder(null);
+            }
+        }
+    }
+
 
 //    @Override
 //    public boolean equals(Object o) {

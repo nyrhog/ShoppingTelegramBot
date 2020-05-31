@@ -27,7 +27,6 @@ public class Client {
     private Long telegramUserID;
 
 
-
     /*
     FavouriteClothes: ManyToMany with extra columns
      */
@@ -54,6 +53,22 @@ public class Client {
         }
     }
 
+    @OneToMany(
+            mappedBy = "client",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OrderClient> orderClients = new ArrayList<>();
+
+    public void addOrderClient(OrderClient order){
+        this.orderClients.add(order);
+        order.setClient(this);
+    }
+
+    public void removeOrderClient(OrderClient order){
+        this.orderClients.remove(order);
+        order.setClient(null);
+    }
 
     @Override
     public boolean equals(Object o) {
