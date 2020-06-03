@@ -116,16 +116,16 @@ public class Clothes {
     )
     private List<FavouriteClothes> favouriteClothes = new ArrayList<>();
 
-    public void addFavouriteClothes(Client client, Size size, Color color){
-        FavouriteClothes favouriteClothes = new FavouriteClothes(client, this, size.getName(), color.getName());
+    public void addFavouriteClothes(Client client){
+        FavouriteClothes favouriteClothes = new FavouriteClothes(client, this);
         this.favouriteClothes.add(favouriteClothes);
-        client.getFavouriteClothes().add(favouriteClothes);
+//        client.getFavouriteClothes().add(favouriteClothes);
     }
 
     public void removeFavouriteClothes(Client client) {
         for(FavouriteClothes favouriteClothes : client.getFavouriteClothes()){
             if (favouriteClothes.getClient().equals(client) && favouriteClothes.getClothes().equals(this)) {
-                favouriteClothes.getClient().getFavouriteClothes().remove(favouriteClothes);
+//                favouriteClothes.getClient().getFavouriteClothes().remove(favouriteClothes);
                 favouriteClothes.setClient(null);
                 favouriteClothes.setClothes(null);
             }
@@ -156,11 +156,11 @@ public class Clothes {
     }
 
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Clothes clothes = (Clothes) o;
-//        return Objects.equals(id, clothes.id);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clothes clothes = (Clothes) o;
+        return Objects.equals(id, clothes.id);
+    }
 }

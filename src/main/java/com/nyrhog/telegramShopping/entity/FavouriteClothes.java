@@ -3,6 +3,7 @@ package com.nyrhog.telegramShopping.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,11 +15,9 @@ import java.util.Objects;
 @Setter
 public class FavouriteClothes {
 
-    public FavouriteClothes(Client client, Clothes clothes, String size, String color) {
+    public FavouriteClothes(Client client, Clothes clothes) {
         this.client = client;
         this.clothes = clothes;
-        this.size = size;
-        this.color = color;
         this.id = new FavouriteClothesId(client.getId(), clothes.getId());
     }
 
@@ -32,11 +31,6 @@ public class FavouriteClothes {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("clothesId")
     private Clothes clothes;
-    
-    @Column
-    private String size;
-    
-    private String color;
 
     @Override
     public boolean equals(Object o) {

@@ -3,16 +3,14 @@ package com.nyrhog.telegramShopping.entity.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ResultDTO {
-
-    private ResultForDTO result;
-
-    private String message;
+public class ResultDTO extends DTO {
 
     @JsonProperty("clothes")
     private List<ClothesDTO> clothesDTOList = new ArrayList<>();

@@ -14,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Client {
 
     @Id
@@ -37,18 +38,19 @@ public class Client {
     )
     private List<FavouriteClothes> favouriteClothes = new ArrayList<>();
 
-    public void addFavouriteClothes(Clothes clothes, Size size, Color color) {
-        FavouriteClothes favouriteClothes = new FavouriteClothes(this, clothes, size.getName(), color.getName());
+    public void addFavouriteClothes(Clothes clothes) {
+        FavouriteClothes favouriteClothes = new FavouriteClothes(this, clothes);
         this.favouriteClothes.add(favouriteClothes);
-        clothes.getFavouriteClothes().add(favouriteClothes);
+//        clothes.getFavouriteClothes().add(favouriteClothes);
     }
 
     public void removeFavouriteClothes(Clothes clothes) {
         for(FavouriteClothes favouriteClothes : clothes.getFavouriteClothes()){
             if (favouriteClothes.getClient().equals(this) && favouriteClothes.getClothes().equals(clothes)) {
-                favouriteClothes.getClothes().getFavouriteClothes().remove(favouriteClothes);
+//                favouriteClothes.getClothes().getFavouriteClothes().remove(favouriteClothes);
                 favouriteClothes.setClient(null);
                 favouriteClothes.setClothes(null);
+                break;
             }
         }
     }

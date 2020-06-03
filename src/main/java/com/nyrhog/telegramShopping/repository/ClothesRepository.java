@@ -14,23 +14,6 @@ public interface ClothesRepository extends JpaRepository<Clothes, Long> {
 
     Clothes findByName(String name);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Query("FROM Clothes as clothes left join fetch clothes.colors as ccolor where " +
             "ccolor.name in ?1")
     List<Clothes> findAllByColors(List<String> colors);
