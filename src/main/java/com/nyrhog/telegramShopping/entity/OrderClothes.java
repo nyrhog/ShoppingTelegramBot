@@ -17,8 +17,8 @@ public class OrderClothes {
     public OrderClothes(OrderClient order, Clothes clothes, String size, String color) {
         this.order = order;
         this.clothes = clothes;
-        this.size = size;
         this.color = color;
+        this.size = size;
         this.id = new OrderClothesId(order.getId(), clothes.getId());
     }
 
@@ -38,7 +38,6 @@ public class OrderClothes {
 
     @Column
     private String color;
-
 
     @Override
     public boolean equals(Object o) {

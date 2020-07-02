@@ -20,6 +20,4 @@ public class InputOrderAPI {
     @JsonProperty("size")
     String size;
 
-    @JsonProperty("count")
-    String count;
 }

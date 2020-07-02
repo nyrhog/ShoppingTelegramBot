@@ -38,9 +38,6 @@ public class FavouriteController {
         Clothes clothes = clothesRepository.findById(data.getClothesId()).orElse(null);
         Client client = clientRepository.findByTelegramUserID(data.getTelegramUserId()).orElse(null);
 
-        System.out.println(clothes);
-        System.out.println(client);
-
         if(client == null){
             client = new Client();
             client.setTelegramUserID(data.getTelegramUserId());
@@ -67,8 +64,8 @@ public class FavouriteController {
         System.out.println(found);
 
         if(found){
-//            client.removeFavouriteClothes(clothes);
-            favouriteClothesRepository.deleteByClient_IdAndClothes_Id(client.getId(),clothes.getId());
+
+            favouriteClothesRepository.deleteFavouriteClothes(data.getTelegramUserId(), data.getClothesId());
             clientRepository.saveAndFlush(client);
 
             favouriteDTO.setMessage("Одежда была удалена из \"Избранное\"");
@@ -77,6 +74,7 @@ public class FavouriteController {
 
             return favouriteDTO;
         }
+
         else{
             client.addFavouriteClothes(clothes);
             clientRepository.saveAndFlush(client);
@@ -87,5 +85,19 @@ public class FavouriteController {
 
             return favouriteDTO;
         }
+    }
+
+    @PostMapping("/removeAllClothesFromFavourite")
+    public FavouriteDTO removeAllClothesFromFavourite(@RequestBody FavouriteAPI data){
+        Client client = clientRepository.findByTelegramUserID(data.getTelegramUserId()).orElse(null);
+
+        favouriteClothesRepository.deleteAllByClient_Id(client.getId());
+        clientRepository.saveAndFlush(client);
+
+        FavouriteDTO favouriteDTO = new FavouriteDTO();
+        favouriteDTO.setResult(ResultForDTO.SUCCESS);
+        favouriteDTO.setMessage("Вся одежда была удалена из \"Избранное\"");
+
+        return favouriteDTO;
     }
 }

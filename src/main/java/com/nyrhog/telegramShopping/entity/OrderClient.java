@@ -19,6 +19,9 @@ public class OrderClient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "boolean default true", nullable = false)
+    private Boolean active;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 
