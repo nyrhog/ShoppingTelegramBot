@@ -42,11 +42,13 @@ public class OrderController {
         OrderClient orderClient = orderClientRepository.findByActiveTrueAndClientTelegramUserID(client.getTelegramUserID());
         if(orderClient == null){
             orderClient = new OrderClient();
-            orderClient.addOrderClothes();
+            orderClient.addOrderClothes(clothes, size, color);
+            client.addOrderClient(orderClient);
+            clientRepository.saveAndFlush(client);
         } else {
-            orderClient.addOrderClothes();
+            orderClient.addOrderClothes(clothes, size, color);
+            orderClientRepository.saveAndFlush(orderClient);
         }
-
 
         favouriteDTO.setMessage("Пользователь был добавлен. Одежда добавлена в \"Заказ\"");
         favouriteDTO.setResult(ResultForDTO.SUCCESS);
